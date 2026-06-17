@@ -1,138 +1,140 @@
 /* ============================================================
-   Thank-you ritual — the multi-step receive → savor → reply → send
-   flow. Reuses the envelope (sealed/opening) from takeover.css; this
-   file styles the card-savor, offer, compose, send, and exchange scenes.
-   All scenes live inside .tyt-scrim (full-phone dark blur overlay).
+   Thank-you ritual — redesigned to Benable's mobile identity:
+   light surfaces, Inter, #7a5cfa accent used sparingly, clean
+   inputs/buttons, line iconography. Tokens mirror the Design-Labs
+   Figma (text #1c1c1c / #717171 / #aaaaaa, border #e3e3e3,
+   fill #f1f1f1, accent #7a5cfa, success #2baf87, radius 8/12/16).
+   The flow (receive → savor → reply → send) is unchanged.
    ============================================================ */
-
-/* shared buttons */
-.r-btn { display: block; width: 100%; border: 0; cursor: pointer; font: 600 14px/1 -apple-system, system-ui, sans-serif; padding: 13px; border-radius: 12px; transition: transform .12s ease, box-shadow .12s ease; }
-.r-btn--p { background: linear-gradient(135deg, #e85a82, #7a5cf6); color: #fff; box-shadow: 0 8px 18px -6px rgba(150, 80, 200, .55); }
-.r-btn--p:hover { transform: translateY(-1px); }
-.r-btn--p:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-.r-btn--g { background: transparent; color: rgba(255, 255, 255, .8); padding: 10px; }
-.r-btn--g:hover { color: #fff; }
-
-/* ---------- Scene: savor the card (front + back flip) ---------- */
-.r-stage {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 20px; gap: 4px;
-  animation: r-fade .4s ease both;
+.ritual {
+  position: absolute; inset: 0; z-index: 60;
+  display: flex; flex-direction: column;
+  background: #faf9fe;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1c1c1c;
+  animation: r-in .26s ease both;
 }
-@keyframes r-fade { from { opacity: 0; } to { opacity: 1; } }
-.r-cap { margin: 0 0 14px; color: rgba(255,255,255,.85); font: 500 13px/1.3 -apple-system, system-ui, sans-serif; }
+@keyframes r-in { from { opacity: 0; } to { opacity: 1; } }
+.ritual--out { opacity: 0; transition: opacity .24s ease; }
 
-.r-card {
-  border: 0; background: none; padding: 0; cursor: pointer; perspective: 1400px;
-  -webkit-tap-highlight-color: transparent; position: relative;
-  animation: r-card-in .5s cubic-bezier(.2,.7,.3,1.25) both;
+/* ---------- header (echoes the publish-flow header) ---------- */
+.r-header { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 14px 16px 13px; background: #fff; border-bottom: 1px solid #f0eef7; }
+.r-header__back { border: 0; background: none; font-size: 24px; line-height: 1; color: #1c1c1c; cursor: pointer; padding: 0 4px 0 0; margin-left: -2px; }
+.r-header__av { width: 38px; height: 38px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; background: #efeafe; color: #7a5cfa; font: 700 15px/1 'Inter', sans-serif; }
+.r-header__id { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.r-header__brand { display: block; font: 600 15px/1.3 'Inter', sans-serif; color: #1c1c1c; }
+.r-header__camp { display: block; font: 400 13px/1.3 'Inter', sans-serif; color: #717171; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- shared type + buttons ---------- */
+.r-title { font: 600 22px/28px 'Inter', sans-serif; letter-spacing: -.01em; margin: 0; }
+.r-sub { font: 400 14px/20px 'Inter', sans-serif; color: #717171; margin: 7px 0 0; }
+.r-overline { font: 600 11px/16px 'Inter', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #aaaaaa; }
+
+.r-btn { display: block; width: 100%; border: 0; cursor: pointer; font: 600 16px/1 'Inter', sans-serif; padding: 16px; border-radius: 12px; transition: background .14s ease, transform .1s ease; }
+.r-btn--primary { background: #7a5cfa; color: #fff; }
+.r-btn--primary:hover { background: #6a4af0; }
+.r-btn--primary:active { transform: scale(.99); }
+.r-btn--primary:disabled { background: #bfb9d2; cursor: not-allowed; }
+.r-text { display: block; width: 100%; border: 0; background: none; cursor: pointer; font: 500 15px/1 'Inter', sans-serif; color: #717171; padding: 13px; }
+.r-text:hover { color: #1c1c1c; }
+
+.r-footer { flex: 0 0 auto; padding: 12px 16px 16px; background: #faf9fe; }
+
+/* ============================================================
+   Scene: RECEIVE — clean envelope on a light surface
+   ============================================================ */
+.r-center { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+.r-env {
+  position: relative; width: 236px; height: 148px; border: 0; background: none; padding: 0; cursor: pointer;
+  perspective: 900px; animation: r-env-in .6s cubic-bezier(.22,1,.36,1) both;
 }
-@keyframes r-card-in { from { opacity: 0; transform: translateY(20px) scale(.8); } to { opacity: 1; transform: none; } }
-.r-flip {
-  position: relative; display: block; width: 269px; height: 336px;
-  transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,0,.2,1);
-}
+@keyframes r-env-in { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+.r-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #ece9f7; border-radius: 14px; box-shadow: 0 18px 44px rgba(122,92,250,.14); }
+.r-env__pocket { position: absolute; bottom: 0; left: 0; right: 0; height: 64%; background: linear-gradient(180deg, #f7f5ff, #efeafe); clip-path: polygon(0 26%, 50% 0, 100% 26%, 100% 100%, 0 100%); border-radius: 0 0 14px 14px; z-index: 2; }
+.r-env__flap { position: absolute; top: 0; left: 0; right: 0; height: 62%; background: #efeafe; clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top center; transition: transform .6s cubic-bezier(.5,0,.2,1); z-index: 4; }
+.r-env__seal { position: absolute; top: 43%; left: 50%; margin-left: -16px; width: 32px; height: 32px; border-radius: 50%; background: #7a5cfa; color: #fff; display: grid; place-items: center; z-index: 5; box-shadow: 0 4px 12px rgba(122,92,250,.45); transition: opacity .3s ease, transform .4s ease; }
+.r-env__seal svg { width: 15px; height: 15px; }
+.r-env.is-open .r-env__flap { transform: rotateX(-164deg); z-index: 1; }
+.r-env.is-open .r-env__seal { opacity: 0; transform: scale(.3) translateY(12px); }
+.r-reveal__title { font: 600 22px/28px 'Inter', sans-serif; margin: 34px 0 0; }
+.r-reveal__sub { font: 400 14px/20px 'Inter', sans-serif; color: #717171; margin: 8px 0 0; max-width: 280px; }
+
+/* ============================================================
+   Scene: SAVOR — card centered, flip to the note, offer rises
+   ============================================================ */
+.r-card-scene { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; transition: padding-bottom .4s ease; }
+.r-card-scene.offer-in { padding-bottom: 232px; }
+.r-card-scene__cap { font: 500 13px/1.3 'Inter', sans-serif; color: #717171; margin: 0 0 16px; }
+.r-card { border: 0; background: none; padding: 0; cursor: pointer; perspective: 1400px; -webkit-tap-highlight-color: transparent; animation: r-card-in .5s cubic-bezier(.2,.7,.3,1.2) both; }
+@keyframes r-card-in { from { opacity: 0; transform: translateY(18px) scale(.88); } to { opacity: 1; transform: none; } }
+.r-flip { position: relative; width: 263px; height: 329px; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,0,.2,1); }
 .r-flip.is-flipped { transform: rotateY(180deg); }
 .r-face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .r-face--back { transform: rotateY(180deg); }
 
-/* consistent large polaroid regardless of viewport rules in postcard.css */
-.r-stage .pc-polaroid, .r-stage .pc-polaroid--back {
-  flex: 0 0 auto; width: 320px; height: 400px; padding: 14px 14px 0;
-  transform: scale(.84); transform-origin: center;
-}
-.r-stage .pc-polaroid__caption { font-size: 22px; }
-.r-stage .pc-polaroid__signoff { font-size: 16px; }
-.r-stage .pc-polaroid__sticker { width: 62px; height: 62px; right: -10px; bottom: -14px; }
+/* the polaroid (brand artifact) — consistent large size on the light bg */
+.ritual .pc-polaroid, .ritual .pc-polaroid--back { flex: 0 0 auto; width: 320px; height: 400px; padding: 14px 14px 0; transform: scale(.82); transform-origin: center; }
+.ritual .pc-polaroid__caption { font-size: 22px; }
+.ritual .pc-polaroid__signoff { font-size: 16px; }
+.ritual .pc-polaroid__sticker { width: 62px; height: 62px; right: -10px; bottom: -14px; }
 
-.r-hint { color: rgba(255,255,255,.6); font: 500 12px/1 -apple-system, system-ui, sans-serif; margin: 16px 0 0; min-height: 12px; }
+/* clean flip affordance — a small lavender pill, not handwriting */
+.r-flip-hint { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; border: 0; cursor: pointer; font: 600 13px/1 'Inter', sans-serif; color: #7a5cfa; background: #efeafe; padding: 9px 14px; border-radius: 999px; transition: background .14s ease; min-height: 16px; }
+.r-flip-hint:hover { background: #e6dffb; }
+.r-flip-hint svg { width: 14px; height: 14px; }
+.r-flip-hint--muted { color: #717171; background: #f1f1f1; }
 
-/* the reply offer — rises in once the gift has landed */
-.r-offer {
-  width: 100%; max-width: 320px; margin-top: 18px;
-  background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18);
-  border-radius: 18px; padding: 14px; text-align: center;
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  opacity: 0; transform: translateY(14px); pointer-events: none;
-  transition: opacity .4s ease, transform .4s cubic-bezier(.2,.7,.3,1.1);
-}
-.r-offer.is-in { opacity: 1; transform: none; pointer-events: auto; }
-.r-offer__t { color: #fff; font-family: 'Caveat', 'Kalam', cursive; font-size: 19px; margin-bottom: 10px; }
+/* offer — clean white sheet sliding up from the bottom */
+.r-offer { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #f0eef7; border-radius: 20px 20px 0 0; padding: 20px 16px 18px; box-shadow: 0 -12px 32px rgba(20,16,40,.07); transform: translateY(112%); transition: transform .45s cubic-bezier(.2,.7,.3,1.05); }
+.r-offer.is-in { transform: none; }
+.r-offer__t { font: 600 18px/24px 'Inter', sans-serif; text-align: center; margin: 0; }
+.r-offer__s { font: 400 13px/18px 'Inter', sans-serif; color: #717171; text-align: center; margin: 4px 0 16px; }
+.r-offer .r-text { margin-top: 2px; }
 
-/* ---------- Scene: compose (light sheet) ---------- */
-.r-compose {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-  width: calc(100% - 28px); max-width: 340px; max-height: calc(100% - 36px);
-  background: linear-gradient(180deg, #fdfcfb, #faf6ef);
-  border-radius: 22px; padding: 18px 18px 20px; display: flex; flex-direction: column;
-  box-shadow: 0 30px 70px -20px rgba(0,0,0,.5);
-  animation: r-sheet-in .34s cubic-bezier(.2,.7,.3,1.15) both; overflow: hidden;
-}
-@keyframes r-sheet-in { from { opacity: 0; transform: translate(-50%,-46%) scale(.96); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
-.r-compose__top { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-.r-back { border: 0; background: none; font-size: 22px; line-height: 1; color: #555; cursor: pointer; padding: 0 2px; }
-.r-compose__to { font: 600 15px/1 -apple-system, system-ui, sans-serif; color: #1a1a1f; }
-.r-lbl { font: 700 10px/1 -apple-system, system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: #9aa0a6; margin: 2px 0 8px; }
-.r-starters { display: flex; flex-wrap: wrap; gap: 7px; }
-.r-st { font: 500 12px/1 -apple-system, system-ui, sans-serif; padding: 9px 12px; border-radius: 999px; background: #fff; color: #4a4f57; border: 0; cursor: pointer; box-shadow: 0 1px 3px rgba(20,16,40,.1); }
-.r-st.on { background: #efe9fe; color: #6a4af0; box-shadow: inset 0 0 0 1.5px #c9b8fb; }
-.r-write {
-  margin-top: 12px; width: 100%; min-height: 96px; resize: none;
-  background: #fffdfa; border: 1px solid #ece7df; border-radius: 12px; padding: 13px;
-  font-family: 'Caveat', 'Kalam', cursive; font-size: 20px; line-height: 1.3; color: #2a2a2a; outline: none;
-}
-.r-write:focus { border-color: #c9b8fb; }
-.r-optrow { display: flex; gap: 8px; margin-top: 12px; }
-.r-opt { flex: 1; border: 1px dashed #d4d7dd; background: #fff; border-radius: 11px; padding: 10px 8px; font: 600 11.5px/1.2 -apple-system, system-ui, sans-serif; color: #6a6f78; cursor: pointer; }
-.r-opt.on { border-style: solid; border-color: #f3c0d2; background: #fdf2f6; color: #e85a82; }
-.r-send { margin-top: 14px; }
+/* ============================================================
+   Scene: WRITE — full light compose screen
+   ============================================================ */
+.r-body { flex: 1; min-height: 0; overflow-y: auto; padding: 20px 16px 8px; }
+.r-body::-webkit-scrollbar { width: 0; }
+.r-field-label { display: block; margin: 0 0 8px; }
+.r-field { width: 100%; background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; padding: 14px; font: 400 16px/22px 'Inter', sans-serif; color: #1c1c1c; resize: none; min-height: 116px; outline: none; transition: border-color .14s ease; }
+.r-field:focus { border-color: #7a5cfa; }
+.r-field::placeholder { color: #aaaaaa; }
+.r-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.r-chip { font: 500 13px/1 'Inter', sans-serif; padding: 9px 14px; border-radius: 999px; background: #f1f1f1; color: #1c1c1c; border: 0; cursor: pointer; transition: background .14s ease, box-shadow .14s ease; }
+.r-chip.on { background: #efeafe; color: #7a5cfa; box-shadow: inset 0 0 0 1.5px #cdbdfb; }
+.r-add { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 18px; padding: 13px 14px; border: 1px dashed #cfcadf; border-radius: 12px; background: #fff; color: #717171; font: 500 13.5px/1 'Inter', sans-serif; cursor: pointer; }
+.r-add.on { border-style: solid; border-color: #cdbdfb; background: #faf9fe; color: #7a5cfa; }
+.r-add__thumb { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; flex: 0 0 auto; }
+.r-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding: 13px 14px; background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; }
+.r-toggle-row__txt b { display: block; font: 600 14px/18px 'Inter', sans-serif; color: #1c1c1c; }
+.r-toggle-row__txt span { font: 400 12.5px/16px 'Inter', sans-serif; color: #717171; }
+.r-toggle { width: 44px; height: 26px; border-radius: 999px; background: #e3e3e3; border: 0; position: relative; cursor: pointer; flex: 0 0 auto; transition: background .16s ease; }
+.r-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.22); transition: transform .16s ease; }
+.r-toggle.on { background: #7a5cfa; }
+.r-toggle.on::after { transform: translateX(18px); }
 
-/* ---------- Scene: sending ---------- */
-.r-sending { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
-.r-fly { font-size: 52px; animation: r-fly 1.6s cubic-bezier(.4,0,.2,1) forwards; }
-@keyframes r-fly {
-  0% { transform: translateY(20px) scale(.8) rotate(-6deg); opacity: 0; }
-  25% { transform: translateY(0) scale(1) rotate(0); opacity: 1; }
-  70% { transform: translateY(-30px) scale(1) rotate(3deg); opacity: 1; }
-  100% { transform: translateY(-260px) scale(.5) rotate(16deg); opacity: 0; }
-}
-.r-sending p { color: rgba(255,255,255,.85); font: 500 14px/1 -apple-system, system-ui, sans-serif; }
+/* ============================================================
+   Scene: SEND — clean spinner
+   ============================================================ */
+.r-sending { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+.r-spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #ece9f7; border-top-color: #7a5cfa; animation: r-spin .8s linear infinite; }
+@keyframes r-spin { to { transform: rotate(360deg); } }
+.r-sending p { font: 500 14px/1 'Inter', sans-serif; color: #717171; }
 
-/* ---------- Scene: exchange ---------- */
-.r-exchange { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; animation: r-fade .45s ease both; }
-.r-exchange__cap { color: #fff; font: 700 18px/1.3 -apple-system, system-ui, sans-serif; text-align: center; }
-.r-exchange__sub { color: rgba(255,255,255,.65); font: 500 12.5px/1.3 -apple-system, system-ui, sans-serif; margin-top: 6px; text-align: center; }
-.r-exchange__cards { display: flex; justify-content: center; margin: 22px 0 26px; }
-/* Fixed, scaled footprint so two cards fit the phone (the polaroid's 320px
-   layout box is flex-centered inside, scaled down visually). */
-.r-exchange__cards .r-ex { display: inline-flex; align-items: center; justify-content: center; width: 172px; height: 226px; margin: 0 -6px; }
-.r-exchange .pc-polaroid { flex: 0 0 auto; width: 320px; height: 400px; padding: 14px 14px 0; transform: scale(.52) rotate(var(--exrot, 0deg)); transform-origin: center; }
-.r-exchange .pc-polaroid__caption { font-size: 22px; }
-.r-exchange .pc-polaroid__signoff { font-size: 16px; }
-.r-exchange .pc-polaroid__sticker { width: 62px; height: 62px; }
-.r-exchange .r-btn { max-width: 220px; }
-
-/* ---------- confetti burst (reused for card + exchange) ---------- */
-.r-burst { position: absolute; left: 50%; top: 46%; width: 0; height: 0; pointer-events: none; z-index: 7; }
-.r-cp { position: absolute; left: 0; top: 0; width: 9px; height: 9px; border-radius: 2px; opacity: 0; }
-.r-cp--1 { background: #f8c3d0; } .r-cp--2 { background: #c4a4e8; border-radius: 50%; width: 7px; height: 7px; }
-.r-cp--3 { background: #ffd166; width: 6px; height: 6px; } .r-cp--4 { background: #7ed3a3; border-radius: 50%; }
-.r-cp--5 { background: #e85a82; width: 7px; height: 7px; } .r-cp--6 { background: #7a5cfa; border-radius: 50%; width: 8px; height: 8px; }
-.r-cp--7 { background: #ffd166; } .r-cp--8 { background: #f8c3d0; border-radius: 50%; width: 6px; height: 6px; }
-.r-burst .r-cp { animation: var(--cp) .95s cubic-bezier(.2,.6,.4,1) .05s forwards; }
-.r-cp--1 { --cp: rcp1; } .r-cp--2 { --cp: rcp2; } .r-cp--3 { --cp: rcp3; } .r-cp--4 { --cp: rcp4; }
-.r-cp--5 { --cp: rcp5; } .r-cp--6 { --cp: rcp6; } .r-cp--7 { --cp: rcp7; } .r-cp--8 { --cp: rcp8; }
-@keyframes rcp1 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(-150px,-150px) rotate(340deg)} }
-@keyframes rcp2 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(160px,-130px) rotate(-300deg)} }
-@keyframes rcp3 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(-110px,-190px) rotate(220deg)} }
-@keyframes rcp4 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(140px,-200px) rotate(-360deg)} }
-@keyframes rcp5 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(-180px,-90px) rotate(180deg)} }
-@keyframes rcp6 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(70px,-210px) rotate(-160deg)} }
-@keyframes rcp7 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(200px,-70px) rotate(400deg)} }
-@keyframes rcp8 { 0%{opacity:0;transform:translate(0,0) rotate(0)} 10%{opacity:1} 100%{opacity:0;transform:translate(-80px,-220px) rotate(-220deg)} }
+/* ============================================================
+   Scene: EXCHANGE — clean success
+   ============================================================ */
+.r-exchange { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; animation: r-in .4s ease both; }
+.r-check { width: 52px; height: 52px; border-radius: 50%; background: #2baf87; color: #fff; display: grid; place-items: center; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(43,175,135,.32); }
+.r-check svg { width: 26px; height: 26px; }
+.r-exchange__title { font: 600 20px/26px 'Inter', sans-serif; }
+.r-exchange__sub { font: 400 14px/20px 'Inter', sans-serif; color: #717171; margin: 6px 0 0; }
+.r-exchange__cards { display: flex; justify-content: center; margin: 26px 0 28px; }
+.r-ex { display: inline-flex; align-items: center; justify-content: center; width: 156px; height: 206px; margin: 0 -4px; }
+.ritual .r-exchange .pc-polaroid { flex: 0 0 auto; width: 320px; height: 400px; padding: 14px 14px 0; transform: scale(.46) rotate(var(--exrot, 0deg)); transform-origin: center; }
 
 @media (prefers-reduced-motion: reduce) {
-  .r-stage, .r-card, .r-flip, .r-compose, .r-fly, .r-exchange, .r-offer { animation: none !important; transition: none !important; }
-  .r-burst .r-cp { animation: none; }
+  .ritual, .r-env, .r-card, .r-flip, .r-offer, .r-exchange, .r-env__flap, .r-env__seal { animation: none !important; transition: none !important; }
+  .r-spinner { animation: none; }
 }
